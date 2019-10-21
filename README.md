@@ -86,6 +86,12 @@ fastdfs.tracker_servers = 10.0.11.201:22122,10.0.11.202:22122,10.0.11.203:22122
     注2：fastdfs.tracker_servers 配置项不能重复属性名，多个 tracker_server 用逗号","隔开
     注3：除了fastdfs.tracker_servers，其它配置项都是可选的
 
+## 从外部传入配置信息,并初始化
+```java
+//GlobalConfig config = ... 
+ClientGlobal.init(config);
+
+```
 
 ## 加载配置示例
 
