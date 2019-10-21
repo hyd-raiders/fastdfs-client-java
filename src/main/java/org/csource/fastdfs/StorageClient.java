@@ -1625,10 +1625,22 @@ public class StorageClient {
     if (this.storageServer != null) {
       return false;
     } else {
-      TrackerClient tracker = new TrackerClient();
-      this.storageServer = tracker.getStoreStorage(this.trackerServer, group_name);
-      if (this.storageServer == null) {
-        throw new MyException("getStoreStorage fail, errno code: " + tracker.getErrorCode());
+
+      int repeatCount = 0;
+      while (repeatCount < 2) {
+        try {
+          TrackerClient tracker = new TrackerClient();
+          this.storageServer = tracker.getStoreStorage(this.trackerServer, group_name);
+          if (this.storageServer == null) {
+            throw new MyException("getStoreStorage fail, errno code: " + tracker.getErrorCode());
+          }
+          break;
+        } catch (Exception ex) {
+          repeatCount++;
+          if(repeatCount >=2){
+            throw ex;
+          }
+        }
       }
       return true;
     }
@@ -1645,11 +1657,24 @@ public class StorageClient {
     if (this.storageServer != null) {
       return false;
     } else {
-      TrackerClient tracker = new TrackerClient();
-      this.storageServer = tracker.getFetchStorage(this.trackerServer, group_name, remote_filename);
-      if (this.storageServer == null) {
-        throw new MyException("getStoreStorage fail, errno code: " + tracker.getErrorCode());
+
+      int repeatCount = 0;
+      while (repeatCount < 2) {
+        try {
+          TrackerClient tracker = new TrackerClient();
+          this.storageServer = tracker.getFetchStorage(this.trackerServer, group_name, remote_filename);
+          if (this.storageServer == null) {
+            throw new MyException("getStoreStorage fail, errno code: " + tracker.getErrorCode());
+          }
+          break;
+        } catch (Exception ex) {
+          repeatCount++;
+          if(repeatCount >=2){
+            throw ex;
+          }
+        }
       }
+
       return true;
     }
   }
@@ -1665,10 +1690,21 @@ public class StorageClient {
     if (this.storageServer != null) {
       return false;
     } else {
-      TrackerClient tracker = new TrackerClient();
-      this.storageServer = tracker.getUpdateStorage(this.trackerServer, group_name, remote_filename);
-      if (this.storageServer == null) {
-        throw new MyException("getStoreStorage fail, errno code: " + tracker.getErrorCode());
+      int repeatCount = 0;
+      while (repeatCount < 2) {
+        try {
+          TrackerClient tracker = new TrackerClient();
+          this.storageServer = tracker.getUpdateStorage(this.trackerServer, group_name, remote_filename);
+          if (this.storageServer == null) {
+            throw new MyException("getStoreStorage fail, errno code: " + tracker.getErrorCode());
+          }
+          break;
+        } catch (Exception ex) {
+          repeatCount++;
+          if(repeatCount >=2){
+            throw ex;
+          }
+        }
       }
       return true;
     }

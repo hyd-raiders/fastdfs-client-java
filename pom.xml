@@ -14,14 +14,14 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.test.failure.ignore>true</maven.test.failure.ignore>
     <maven.test.skip>true</maven.test.skip>
-    <jdk.version>1.6</jdk.version>
+    <jdk.version>1.8</jdk.version>
   </properties>
 
 
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>slf4j-api</artifactId>
       <version>1.7.26</version>
     </dependency>
     <dependency>

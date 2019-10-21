@@ -115,6 +115,64 @@ public class ClientGlobal {
   }
 
   /**
+   * load global variables
+   *
+   * @param config config
+   */
+  public static void init(GlobalConfig config) throws IOException, MyException {
+
+    g_connect_timeout = config.getConnectTimeout();
+    if (g_connect_timeout < 0) {
+      g_connect_timeout = DEFAULT_CONNECT_TIMEOUT;
+    }
+    g_connect_timeout = g_connect_timeout * 1000; //millisecond
+
+    g_network_timeout = config.getNetworkTimeout();
+    if (g_network_timeout < 0) {
+      g_network_timeout = DEFAULT_NETWORK_TIMEOUT;
+    }
+    g_network_timeout = g_network_timeout * 1000; //millisecond
+
+    g_charset = config.getCharset();
+    if (g_charset == null || g_charset.length() == 0) {
+      g_charset = DEFAULT_CHARSET;
+    }
+
+    g_anti_steal_token = config.getAntiStealToken();
+    if (g_anti_steal_token) {
+      g_secret_key = config.getSecretKey();
+      if(g_secret_key == null || g_secret_key.length() == 0){
+        g_secret_key = DEFAULT_HTTP_SECRET_KEY;
+      }
+    }
+
+    g_tracker_http_port = config.getTrackerHttpPort();
+    if (g_tracker_http_port < 0) {
+      g_tracker_http_port = DEFAULT_HTTP_TRACKER_HTTP_PORT;
+    }
+
+    List<String> trackerServers = config.getTrackerServers();
+    if (trackerServers == null || trackerServers.size() == 0) {
+      throw new MyException("item \"tracker_server\" not config");
+    }
+
+    InetSocketAddress[] tracker_servers = new InetSocketAddress[trackerServers.size()];
+
+    for (int i = 0; i < trackerServers.size(); i++) {
+      String tracker_server = trackerServers.get(i);
+      if (tracker_server.indexOf(":") == -1) {
+        throw new MyException("the value of item \"tracker_server\" is invalid, the correct format is host:port");
+      }
+      String ip = tracker_server.substring(0, tracker_server.indexOf(":")).trim();
+      int port = Integer.parseInt(tracker_server.substring(tracker_server.indexOf(":") + 1));
+
+      tracker_servers[i] = new InetSocketAddress(ip, port);
+    }
+    g_tracker_group = new TrackerGroup(tracker_servers);
+
+  }
+
+  /**
    * load from properties file
    *
    * @param propsFilePath properties file path, eg:
